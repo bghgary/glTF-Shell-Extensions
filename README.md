@@ -4,7 +4,7 @@ Microsoft Windows shell extensions that pack .gltf to .glb and unpack .glb to .g
 # Installing
 1. Download the latest `glTF-Shell-Extensions.zip` from [Releases](https://github.com/bghgary/glTF-Shell-Extensions/releases).
 2. Unblock the zip file.
-3. Unzip the file to `%ProgramFiles%\glTF-Shell-Extensions` or a directory of your choosing.
+3. Unzip the file to `%ProgramFiles%\glTF Shell Extensions` or a directory of your choosing.
 4. Run `Setup.cmd` as Administrator.
 
 # Usage
