@@ -15,13 +15,31 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
-        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
+        "MsmKey" = "8:_3DB14B3C38E5EEBB06876F23CEB85C07"
+        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+        "MsmKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
+        "OwnerKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
+        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6975F42FFD7E4FD4B1CCE02819E23295"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
         "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,18 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
-        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E6F60A5F3EDED20ECBD3DF699D8C9B08"
-        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
@@ -52,19 +58,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E6F60A5F3EDED20ECBD3DF699D8C9B08"
+        "OwnerKey" = "8:_3DB14B3C38E5EEBB06876F23CEB85C07"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
+        "OwnerKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+        "OwnerKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -162,14 +168,45 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3DB14B3C38E5EEBB06876F23CEB85C07"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3DB14B3C38E5EEBB06876F23CEB85C07"
+                    {
+                    "Name" = "8:Ookii.Dialogs.Wpf.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Ookii.Dialogs.Wpf.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_478AD590DF735E456A41C9C02F6A5CE1"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+                    "_478AD590DF735E456A41C9C02F6A5CE1"
                     {
                     "Name" = "8:Newtonsoft.Json.dll"
                     "Attributes" = "3:512"
@@ -193,21 +230,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9EE638DB08D775D247F0E9E50F3E05A"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6975F42FFD7E4FD4B1CCE02819E23295"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:glTFLoader, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_D9EE638DB08D775D247F0E9E50F3E05A"
-                    {
-                    "Name" = "8:glTFLoader.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:glTFLoader.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\LICENSE.md"
+            "TargetName" = "8:LICENSE.md"
             "Tag" = "8:"
             "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
             "Condition" = "8:"
@@ -221,23 +247,23 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E6F60A5F3EDED20ECBD3DF699D8C9B08"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:glTFLoader, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E6F60A5F3EDED20ECBD3DF699D8C9B08"
+                    "_902DC5F5B6BAFC8408ADD7F6941F5EF6"
                     {
-                    "Name" = "8:Ookii.Dialogs.Wpf.dll"
+                    "Name" = "8:glTFLoader.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Ookii.Dialogs.Wpf.dll"
+            "SourcePath" = "8:glTFLoader.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
@@ -288,9 +314,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:glTF Shell Extension"
+        "ProductName" = "8:glTF Shell Extensions"
         "ProductCode" = "8:{C9D504E2-B713-4496-8907-696079500DAA}"
-        "PackageCode" = "8:{507D2EFE-DFB6-47AB-BEE7-F2A4A38B3E41}"
+        "PackageCode" = "8:{1CEAE68C-757A-4C0E-A90A-435387913D3F}"
         "UpgradeCode" = "8:{F15D3A9C-FD5D-4BEE-9171-88292385E60B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -301,7 +327,7 @@
         "Manufacturer" = "8:Gary Hsu"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:glTF Shell Extension Setup"
+        "Title" = "8:glTF Shell Extensions Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:"
         "Keywords" = "8:"

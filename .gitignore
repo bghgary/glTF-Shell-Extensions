@@ -2,6 +2,6 @@
 bin
 obj
 *.user
-/packages
+/Source/packages
 /Source/Setup/Debug
 /Source/Setup/Release
