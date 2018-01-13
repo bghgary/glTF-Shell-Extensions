@@ -105,6 +105,8 @@ namespace glTF
                     binByteLength = (int)fileStream.Length;
                 }
 
+                model.BufferViews = bufferViews.ToArray();
+
                 if (binByteLength == 0)
                 {
                     File.Delete(binFilePath);
