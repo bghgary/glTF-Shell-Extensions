@@ -3,3 +3,5 @@ bin
 obj
 *.user
 /packages
+/Source/Setup/Debug
+/Source/Setup/Release
