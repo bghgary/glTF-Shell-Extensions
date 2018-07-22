@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 
 namespace glTF
 {
@@ -13,7 +15,7 @@ namespace glTF
             {
                 case "Pack":
                 {
-                    Packer.Pack(e.Args[1]);
+                    new PackWindow(e.Args[1]);
                     break;
                 }
                 case "Unpack":

@@ -21,13 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
-        "OwnerKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
+        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
+        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
         "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,14 +39,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
-        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
+        "MsmKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
+        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -64,13 +64,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
+        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_478AD590DF735E456A41C9C02F6A5CE1"
+        "OwnerKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -199,14 +199,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_478AD590DF735E456A41C9C02F6A5CE1"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_478AD590DF735E456A41C9C02F6A5CE1"
+                    "_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
                     {
                     "Name" = "8:Newtonsoft.Json.dll"
                     "Attributes" = "3:512"
@@ -250,14 +250,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_902DC5F5B6BAFC8408ADD7F6941F5EF6"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9EE638DB08D775D247F0E9E50F3E05A"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:glTFLoader, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_902DC5F5B6BAFC8408ADD7F6941F5EF6"
+                    "_D9EE638DB08D775D247F0E9E50F3E05A"
                     {
                     "Name" = "8:glTFLoader.dll"
                     "Attributes" = "3:512"
@@ -742,7 +742,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A0501DB215AF4565A0E00FFAFB1D4778"
             {
-            "SourcePath" = "8:..\\glTF\\obj\\Release\\glTF.exe"
+            "SourcePath" = "8:..\\glTF\\obj\\Debug\\glTF.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
