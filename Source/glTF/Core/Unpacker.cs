@@ -33,12 +33,12 @@ namespace glTF
         {
             JObject json;
 
+            var inputFileLength = Tools.GetFileLength(this.inputFilePath);
+
             using (var memoryMappedFile = MemoryMappedFile.CreateFromFile(this.inputFilePath, FileMode.Open))
-            using (var viewStream = memoryMappedFile.CreateViewStream())
+            using (var viewStream = memoryMappedFile.CreateViewStream(0, inputFileLength, MemoryMappedFileAccess.Read))
             using (var binaryReader = new BinaryReader(viewStream))
             {
-                var inputFileLength = Tools.GetFileLength(this.inputFilePath);
-
                 var magic = binaryReader.ReadUInt32();
                 if (magic != Binary.Magic)
                 {
@@ -52,9 +52,9 @@ namespace glTF
                 }
 
                 var length = binaryReader.ReadInt32();
-                if (length != inputFileLength)
+                if (length != viewStream.Length)
                 {
-                    throw new InvalidDataException($"Length in header does not match actual data length: {length} != {inputFileLength}");
+                    throw new InvalidDataException($"Length in header does not match actual data length: {length} != {viewStream.Length}");
                 }
 
                 using (var jsonStream = GetJsonChunk(binaryReader, memoryMappedFile))
@@ -64,11 +64,10 @@ namespace glTF
                     json = (JObject)JToken.ReadFrom(jsonTextReader);
                 }
 
-                using (var bin = GetBinChunk(binaryReader, memoryMappedFile, inputFileLength))
-                {
-                    this.ProcessImageFiles(json, bin);
-                    this.ProcessBinFiles(json, bin);
-                }
+
+                var binChunkOffset = FindBinChunk(binaryReader);
+                this.ProcessImageFiles(json, memoryMappedFile, binChunkOffset);
+                this.ProcessBinFiles(json, memoryMappedFile, binChunkOffset);
             }
 
             using (var streamWriter = new StreamWriter(Path.Combine(this.outputDirectoryPath, $"{this.inputFileName}.gltf")))
@@ -88,13 +87,16 @@ namespace glTF
                 throw new InvalidDataException("First chunk format must be JSON");
             }
 
-            return binaryReader.ReadMemoryMappedViewStream(memoryMappedFile, chunkLength, MemoryMappedFileAccess.Read);
+            var startPosition = binaryReader.BaseStream.Position;
+            binaryReader.BaseStream.Position += chunkLength;
+
+            return memoryMappedFile.CreateViewStream(startPosition, chunkLength, MemoryMappedFileAccess.Read);
         }
 
-        private static Stream GetBinChunk(BinaryReader binaryReader, MemoryMappedFile memoryMappedFile, long fileLength)
+        private static long FindBinChunk(BinaryReader binaryReader)
         {
             // Look for BIN chunk
-            while (binaryReader.BaseStream.Position < fileLength)
+            while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
             {
                 var chunkLength = binaryReader.ReadUInt32();
                 var chunkFormat = binaryReader.ReadUInt32();
@@ -106,7 +108,7 @@ namespace glTF
                     }
                     case Binary.ChunkFormatBin:
                     {
-                        return binaryReader.ReadMemoryMappedViewStream(memoryMappedFile, chunkLength, MemoryMappedFileAccess.Read);
+                        return binaryReader.BaseStream.Position;
                     }
                     default:
                     {
@@ -117,10 +119,10 @@ namespace glTF
                 }
             }
 
-            return null;
+            return -1;
         }
 
-        private void ProcessImageFiles(JObject json, Stream bin)
+        private void ProcessImageFiles(JObject json, MemoryMappedFile memoryMappedFile, long binChunkOffset)
         {
             var accessors = (JArray)json["accessors"];
             var bufferViews = (JArray)json["bufferViews"];
@@ -151,7 +153,7 @@ namespace glTF
                             image["uri"] = fileName;
                         }
                     }
-                    else if (this.unpackImages && bufferViews != null && bin != null)
+                    else if (this.unpackImages && bufferViews != null && binChunkOffset != -1)
                     {
                         var bufferViewIndex = (int)image["bufferView"];
                         var bufferView = bufferViews[bufferViewIndex];
@@ -167,8 +169,10 @@ namespace glTF
                                 var byteOffset = (long?)bufferView["byteOffset"] ?? 0;
                                 var byteLength = (int)bufferView["byteLength"];
 
-                                bin.Seek(byteOffset, SeekOrigin.Begin);
-                                bin.CopyTo(fileStream, byteLength);
+                                using (var viewStream = memoryMappedFile.CreateViewStream(binChunkOffset + byteOffset, byteLength, MemoryMappedFileAccess.Read))
+                                {
+                                    viewStream.CopyTo(fileStream);
+                                }
                             }
 
                             image.Remove("bufferView");
@@ -222,7 +226,7 @@ namespace glTF
             }
         }
 
-        private void ProcessBinFiles(JObject json, Stream bin)
+        private void ProcessBinFiles(JObject json, MemoryMappedFile memoryMappedFile, long binChunkOffset)
         {
             var buffers = (JArray)json["buffers"];
             if (buffers != null)
@@ -247,7 +251,7 @@ namespace glTF
                 }
 
                 var bufferViews = (JArray)json["bufferViews"];
-                if (bufferViews != null && bin != null)
+                if (bufferViews != null && binChunkOffset != -1)
                 {
                     if (bufferViews.Any(bufferView => (int)bufferView["buffer"] == 0))
                     {
@@ -265,14 +269,16 @@ namespace glTF
                                     if ((int)bufferView["buffer"] == 0)
                                     {
                                         fileStream.Align();
-                                        var fileStreamPosition = fileStream.Position;
+                                        var outputOffset = fileStream.Position;
 
                                         var byteOffset = (long?)bufferView["byteOffset"] ?? 0;
                                         var byteLength = (int)bufferView["byteLength"];
-                                        bin.Seek(byteOffset, SeekOrigin.Begin);
-                                        bin.CopyTo(fileStream, byteLength);
+                                        using (var viewStream = memoryMappedFile.CreateViewStream(binChunkOffset + byteOffset, byteLength, MemoryMappedFileAccess.Read))
+                                        {
+                                            viewStream.CopyTo(fileStream, byteLength);
+                                        }
 
-                                        bufferView["byteOffset"] = fileStreamPosition;
+                                        bufferView["byteOffset"] = outputOffset;
                                     }
                                 }
 
@@ -281,8 +287,10 @@ namespace glTF
                             else
                             {
                                 var byteLength = (int)buffer["byteLength"];
-                                bin.Seek(0, SeekOrigin.Begin);
-                                bin.CopyTo(fileStream, byteLength);
+                                using (var viewStream = memoryMappedFile.CreateViewStream(binChunkOffset, byteLength, MemoryMappedFileAccess.Read))
+                                {
+                                    viewStream.CopyTo(fileStream, byteLength);
+                                }
                             }
                         }
                     }
