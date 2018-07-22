@@ -21,13 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
-        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+        "MsmKey" = "8:_4D9E8438A65CDD413BE9B959573B548D"
         "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,12 +39,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
-        "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A0501DB215AF4565A0E00FFAFB1D4778"
         "MsmSig" = "8:_UNDEFINED"
@@ -64,13 +52,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D9EE638DB08D775D247F0E9E50F3E05A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+        "OwnerKey" = "8:_4D9E8438A65CDD413BE9B959573B548D"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -199,14 +181,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4D9E8438A65CDD413BE9B959573B548D"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5AB42AC04F660C0B6AAA8C3E96A7C5FC"
+                    "_4D9E8438A65CDD413BE9B959573B548D"
                     {
                     "Name" = "8:Newtonsoft.Json.dll"
                     "Attributes" = "3:512"
@@ -250,37 +232,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9EE638DB08D775D247F0E9E50F3E05A"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:glTFLoader, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_D9EE638DB08D775D247F0E9E50F3E05A"
-                    {
-                    "Name" = "8:glTFLoader.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:glTFLoader.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -315,15 +266,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:glTF Shell Extensions"
-        "ProductCode" = "8:{C9D504E2-B713-4496-8907-696079500DAA}"
-        "PackageCode" = "8:{1CEAE68C-757A-4C0E-A90A-435387913D3F}"
+        "ProductCode" = "8:{B5ED33AD-F188-4B2B-8D9F-EA2A4D1596EC}"
+        "PackageCode" = "8:{DCF2D058-1909-45F2-B68E-E7753F7D485D}"
         "UpgradeCode" = "8:{F15D3A9C-FD5D-4BEE-9171-88292385E60B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1.1"
+        "ProductVersion" = "8:0.2.0"
         "Manufacturer" = "8:Gary Hsu"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -742,7 +693,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A0501DB215AF4565A0E00FFAFB1D4778"
             {
-            "SourcePath" = "8:..\\glTF\\obj\\Debug\\glTF.exe"
+            "SourcePath" = "8:..\\glTF\\obj\\Release\\glTF.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_13DF68DA02A94D0FBE0D8DCCADB9363E"
