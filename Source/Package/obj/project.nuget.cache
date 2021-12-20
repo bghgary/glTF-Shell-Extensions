@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7d0NozFrw25PWQv0/jlOuEOhjIsAgknlNiL6ec0g4dZHy3fS96OKlIxFy25N/LuzkvQN77poIuqvmtpWoMWyPQ==",
+  "success": true,
+  "projectFilePath": "C:\\GitHub\\glTF-Shell-Extensions\\Source\\Package\\Package.wapproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages\\microsoft.windows.sdk.buildtools\\10.0.19041.8\\microsoft.windows.sdk.buildtools.10.0.19041.8.nupkg.sha512"
+  ],
+  "logs": []
+}
