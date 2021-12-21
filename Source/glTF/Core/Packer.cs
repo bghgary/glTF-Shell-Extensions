@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
@@ -36,7 +37,7 @@ namespace glTF
                 {
                     var buffer = (JObject)buffers[index];
                     var uri = (string)buffer["uri"];
-                    if (uri != null && !Tools.IsBase64(uri))
+                    if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
                     {
                         foreach (JObject bufferView in bufferViews)
                         {
@@ -73,7 +74,7 @@ namespace glTF
                 foreach (JObject image in images)
                 {
                     var uri = (string)image["uri"];
-                    if (uri != null && !Tools.IsBase64(uri))
+                    if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
                     {
                         var filePath = Path.Combine(inputDirectoryPath, uri);
                         if (!memoryMappedFiles.TryGetValue(filePath, out MemoryMappedFile memoryMappedFile))
