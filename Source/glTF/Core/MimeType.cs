@@ -14,6 +14,8 @@ namespace glTF
                     return ".jpg";
                 case "image/vnd-ms.dds":
                     return ".dds";
+                case "image/ktx2":
+                    return ".ktx2";
             }
 
             throw new InvalidDataException($"Unsupported mime type: {mimeType}");
@@ -30,6 +32,8 @@ namespace glTF
                     return "image/jpeg";
                 case ".dds":
                     return "image/vnd-ms.dds";
+                case ".ktx2":
+                    return "image/ktx2";
             }
 
             throw new InvalidDataException($"Unsupported file extension: {fileExtension}");
