@@ -8,20 +8,29 @@ namespace glTF
         {
             base.OnStartup(e);
 
-            var command = e.Args[0];
-            switch (command)
+            if (e.Args.Length == 2)
             {
-                case "Pack":
+                var command = e.Args[0];
+                switch (command)
                 {
-                    new PackWindow(e.Args[1]);
-                    break;
+                    case "Pack":
+                    {
+                        new PackWindow(e.Args[1]);
+                        break;
+                    }
+                    case "Unpack":
+                    {
+                        var window = new UnpackWindow(e.Args[1]);
+                        window.ShowDialog();
+                        break;
+                    }
                 }
-                case "Unpack":
-                {
-                    var window = new UnpackWindow(e.Args[1]);
-                    window.ShowDialog();
-                    break;
-                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Right-click on a .gltf or .glb in Windows Explorer to pack or unpack the selected file.",
+                    "glTF Shell Extensions");
             }
 
             this.Shutdown();

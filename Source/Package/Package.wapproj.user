@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <RemoteDebugEnabled>False</RemoteDebugEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Source>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</Source>
+    <SmallTileSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</SmallTileSource>
+    <MediumTileSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</MediumTileSource>
+    <WideTileSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</WideTileSource>
+    <LargeTileSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</LargeTileSource>
+    <AppIconSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</AppIconSource>
+    <SplashScreenSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</SplashScreenSource>
+    <PackageLogoSource>C:\GitHub\glTF-Shell-Extensions\Source\Assets\App.png</PackageLogoSource>
+  </PropertyGroup>
 </Project>
