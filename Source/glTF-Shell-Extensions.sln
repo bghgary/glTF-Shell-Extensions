@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExplorerCommand", "Source\ExplorerCommand\ExplorerCommand.vcxproj", "{294B1862-6E77-4F1E-A542-85F1FA7F7C05}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExplorerCommand", "ExplorerCommand\ExplorerCommand.vcxproj", "{294B1862-6E77-4F1E-A542-85F1FA7F7C05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "glTF", "Source\glTF\glTF.csproj", "{FCA0675C-941E-4992-BBEF-1479013C2CB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "glTF", "glTF\glTF.csproj", "{FCA0675C-941E-4992-BBEF-1479013C2CB8}"
 EndProject
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Package", "Source\Package\Package.wapproj", "{06F30E6C-A16B-4B27-B235-148010D38CA3}"
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Package", "Package\Package.wapproj", "{06F30E6C-A16B-4B27-B235-148010D38CA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
