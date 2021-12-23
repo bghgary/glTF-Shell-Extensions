@@ -7,7 +7,7 @@ This tool is distributed through the Windows Store. Install the latest version [
 # Usage
 ## Packing `.gltf` to `.glb`
 
-Right-click on a `.gltf` file and select `Pack to Binary glTF...`.
+Right-click on a `.gltf` file and select `Pack to Binary glTF`.
 
 ![](/Figures/Pack1.png)
 
@@ -17,7 +17,7 @@ Select a name for the new `.glb` file.
 
 ## Unpacking `.glb` to `.gltf`
 
-Right-click on a `.glb` file and select `Unpack to glTF...`.
+Right-click on a `.glb` file and select `Unpack to glTF`.
 
 ![](/Figures/Unpack1.png)
 
