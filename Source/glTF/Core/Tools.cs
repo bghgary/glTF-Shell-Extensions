@@ -13,10 +13,5 @@ namespace glTF
         {
             return value + 3 - ((value - 1) & 3);
         }
-
-        public static bool IsBase64(string uri)
-        {
-            return uri.StartsWith("data:");
-        }
     }
 }

@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <BuildDir>$([MSBuild]::NormalizeDirectory($(MSBuildThisFileDirectory)..))Build\$(MSBuildProjectName)\</BuildDir>
+
+    <BaseIntermediateOutputPath>$(BuildDir)obj\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(Platform)\</IntermediateOutputPath>
+    <OutputPath>$(BuildDir)bin\$(Configuration)\$(Platform)\</OutputPath>
+
+    <IntDir>$(IntermediateOutputPath)</IntDir>
+    <OutDir>$(OutputPath)</OutDir>
+
+    <PlatformSpecificBundleArtifactsListDir>$(BuildDir)BundleArtifacts\</PlatformSpecificBundleArtifactsListDir>
+  </PropertyGroup>
+</Project>

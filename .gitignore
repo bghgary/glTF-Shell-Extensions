@@ -1,7 +1,4 @@
-﻿.vs
-bin
-obj
+.vs
+Build
+*.aps
 *.user
-/Source/packages
-/Source/Setup/Debug
-/Source/Setup/Release

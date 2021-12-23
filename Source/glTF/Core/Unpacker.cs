@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
@@ -138,7 +139,7 @@ namespace glTF
                     var uri = (string)image["uri"];
                     if (uri != null)
                     {
-                        if (!Tools.IsBase64(uri))
+                        if (Uri.IsWellFormedUriString(uri, UriKind.Relative))
                         {
                             var sourceFilePath = Path.Combine(this.inputDirectoryPath, Path.GetFileName(uri));
                             var fileExtension = Path.GetExtension(uri);
@@ -235,7 +236,7 @@ namespace glTF
                 {
                     var buffer = buffers[index];
                     var uri = (string)buffer["uri"];
-                    if (uri != null && !uri.StartsWith("data:"))
+                    if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
                     {
                         var sourceFilePath = Path.Combine(this.inputDirectoryPath, Path.GetFileName(uri));
                         var fileName = $"{this.inputFileName}{index}.bin";
