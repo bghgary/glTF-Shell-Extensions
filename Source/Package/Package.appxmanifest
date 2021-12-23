@@ -10,13 +10,13 @@
   IgnorableNamespaces="uap rescap com desktop4 desktop5">
 
   <Identity
-    Name="5df28531-baa8-4503-95d5-4003aa6fd565"
-    Publisher="CN=bghga"
-    Version="0.3.0.0" />
+    Name="3561bghgary.glTFShellExtensions"
+    Publisher="CN=1B4BE498-1821-4A6D-B8C7-7AA5A26B0739"
+    Version="0.3.4.0" />
 
   <Properties>
     <DisplayName>glTF Shell Extensions</DisplayName>
-    <PublisherDisplayName>Gary Hsu</PublisherDisplayName>
+    <PublisherDisplayName>bghgary</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -37,7 +37,7 @@
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png" Description="Microsoft Windows shell extensions that pack .gltf to .glb and unpack .glb to .gltf">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
