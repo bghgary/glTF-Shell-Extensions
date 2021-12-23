@@ -220,13 +220,16 @@ DWORD ExplorerCommand::InvokeThreadProc()
     HRESULT hr = InvokeCommand();
     if (FAILED(hr))
     {
-        WCHAR szMessage[4096];
-        if (FAILED(StringCchPrintf(szMessage, ARRAYSIZE(szMessage), L"An error occurred.\n0x%08x", hr)))
+        PCWSTR TITLE = L"glTF Shell Extensions";
+        WCHAR szMessage[256];
+        if (SUCCEEDED(StringCchPrintf(szMessage, ARRAYSIZE(szMessage), L"An error occurred.\n0x%08x", hr)))
         {
-            StringCchCopy(szMessage, ARRAYSIZE(szMessage), L"An unknown error occurred.");
+            MessageBox(nullptr, szMessage, TITLE, MB_OK);
         }
-
-        MessageBox(nullptr, szMessage, L"glTF Shell Extensions", MB_OK);
+        else
+        {
+            MessageBox(nullptr, L"An unknown error occurred.", TITLE, MB_OK);
+        }
     }
 
     return 0;
