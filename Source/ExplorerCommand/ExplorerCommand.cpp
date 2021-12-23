@@ -9,8 +9,6 @@
 #include <wil/result.h>
 #include <wil/win32_helpers.h>
 
-using namespace Microsoft::WRL;
-
 HRESULT ExplorerCommand::CreateInstance(REFIID riid, void** ppv)
 {
     *ppv = nullptr;
@@ -95,7 +93,6 @@ IFACEMETHODIMP ExplorerCommand::GetIcon(IShellItemArray* pItemArray, PWSTR* ppsz
     RETURN_IF_WIN32_BOOL_FALSE(result < ARRAYSIZE(szIcon) ? TRUE : FALSE);
     RETURN_IF_FAILED(StringCchCat(szIcon, ARRAYSIZE(szIcon), L",0"));
     return SHStrDup(szIcon, ppszIcon);
-    //return SHStrDup(L"C:\\Windows\\System32\\shell32.dll,2", ppszIcon);
 }
 
 IFACEMETHODIMP ExplorerCommand::GetToolTip(IShellItemArray* pItemArray, PWSTR* ppszInfotip)
