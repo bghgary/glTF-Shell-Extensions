@@ -12,7 +12,7 @@
   <Identity
     Name="3561bghgary.glTFShellExtensions"
     Publisher="CN=1B4BE498-1821-4A6D-B8C7-7AA5A26B0739"
-    Version="0.3.0.0" />
+    Version="0.3.1.0" />
 
   <Properties>
     <DisplayName>glTF Shell Extensions</DisplayName>
