@@ -1,15 +1,21 @@
-﻿using System;
+using Microsoft.UI.Xaml;
+using System;
 using System.IO;
-using System.Windows;
 
 namespace glTF
 {
-    public partial class PackWindow : Window
+    public sealed partial class PackWindow : Window
     {
         public PackWindow(string inputFilePath)
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ApplySettings();
 
+            this.Pack(inputFilePath);
+        }
+
+        private async void Pack(string inputFilePath)
+        {
             var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.glb");
 
             try
@@ -23,7 +29,7 @@ namespace glTF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Pack Error");
+                await this.ShowErrorDialogAsync(ex.Message, "Pack Error");
             }
 
             File.Delete(tempFilePath);

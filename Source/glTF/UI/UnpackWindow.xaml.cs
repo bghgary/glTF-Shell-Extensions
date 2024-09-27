@@ -1,26 +1,28 @@
-﻿using Ookii.Dialogs.Wpf;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
+using Windows.Storage.Pickers;
 
 namespace glTF
 {
-    public partial class UnpackWindow : Window
+    public sealed partial class UnpackWindow : Window
     {
-        private string inputFilePath;
+        private readonly string inputFilePath;
 
         public UnpackWindow(string inputFilePath)
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ApplySettings();
 
             this.inputFilePath = inputFilePath;
             var inputDirectoryPath = Path.GetDirectoryName(this.inputFilePath);
             var inputFileName = Path.GetFileNameWithoutExtension(this.inputFilePath);
             this.Folder.Text = GetUniqueDirectoryPath(Path.Combine(inputDirectoryPath, inputFileName));
+            this.Folder_TextChanged(this, null);
             this.Folder.SelectAll();
-            this.Folder.Focus();
         }
 
         private static string GetUniqueDirectoryPath(string baseDirectoryPath)
@@ -40,21 +42,21 @@ namespace glTF
             return directoryPath;
         }
 
-        private void Browse_Click(object sender, RoutedEventArgs e)
+        private async void Browse_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new VistaFolderBrowserDialog
-            {
-                ShowNewFolderButton = true,
-                SelectedPath = this.Folder.Text,
-            };
+            var folderPicker = new FolderPicker();
 
-            if (dialog.ShowDialog(this).Value)
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, windowHandle);
+
+            var folder = await folderPicker.PickSingleFolderAsync();
+            if (folder != null)
             {
-                this.Folder.Text = dialog.SelectedPath;
+                this.Folder.Text = folder.Path;
             }
         }
 
-        private void Unpack_Click(object sender, RoutedEventArgs e)
+        private async void Unpack_Click(object sender, RoutedEventArgs e)
         {
             var tempDirectoryPath = Path.Combine(Path.GetTempPath(), $"glTF.{Guid.NewGuid()}");
 
@@ -81,12 +83,12 @@ namespace glTF
 
                 if (this.OpenFolder.IsChecked.Value)
                 {
-                    Process.Start(outputDirectoryPath);
+                    Process.Start(new ProcessStartInfo(outputDirectoryPath) { UseShellExecute = true });
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Unpack Error");
+                await this.ShowErrorDialogAsync(ex.Message, "Unpack Error");
             }
 
             Directory.Delete(tempDirectoryPath, true);
@@ -101,6 +103,14 @@ namespace glTF
         private void Folder_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.Warning.Visibility = Directory.Exists(this.Folder.Text) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void Folder_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                this.Unpack_Click(sender, e);
+            }
         }
     }
 }

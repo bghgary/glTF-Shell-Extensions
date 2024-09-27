@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace glTF
 {
@@ -32,7 +32,7 @@ namespace glTF
 
         private void Unpack()
         {
-            JObject json;
+            JsonNode jsonNode;
 
             var inputFileLength = Tools.GetFileLength(this.inputFilePath);
 
@@ -59,23 +59,19 @@ namespace glTF
                 }
 
                 using (var jsonStream = GetJsonChunk(binaryReader, memoryMappedFile))
-                using (var jsonStreamReader = new StreamReader(jsonStream))
-                using (var jsonTextReader = new JsonTextReader(jsonStreamReader))
                 {
-                    json = (JObject)JToken.ReadFrom(jsonTextReader);
+                    jsonNode = JsonNode.Parse(jsonStream);
                 }
 
-
                 var binChunkOffset = FindBinChunk(binaryReader);
-                this.ProcessImageFiles(json, memoryMappedFile, binChunkOffset);
-                this.ProcessBinFiles(json, memoryMappedFile, binChunkOffset);
+                this.ProcessImageFiles(jsonNode, memoryMappedFile, binChunkOffset);
+                this.ProcessBinFiles(jsonNode, memoryMappedFile, binChunkOffset);
             }
 
-            using (var streamWriter = new StreamWriter(Path.Combine(this.outputDirectoryPath, $"{this.inputFileName}.gltf")))
-            using (var jsonTextWriter = new JsonTextWriter(streamWriter))
+            using (var fileStream = File.Create(Path.Combine(this.outputDirectoryPath, $"{this.inputFileName}.gltf")))
+            using (var jsonWriter = new Utf8JsonWriter(fileStream, new() { Indented = true }))
             {
-                jsonTextWriter.Formatting = Formatting.Indented;
-                json.WriteTo(jsonTextWriter);
+                jsonNode.WriteTo(jsonWriter);
             }
         }
 
@@ -123,11 +119,12 @@ namespace glTF
             return -1;
         }
 
-        private void ProcessImageFiles(JObject json, MemoryMappedFile memoryMappedFile, long binChunkOffset)
+        private void ProcessImageFiles(JsonNode jsonNode, MemoryMappedFile memoryMappedFile, long binChunkOffset)
         {
-            var accessors = (JArray)json["accessors"];
-            var bufferViews = (JArray)json["bufferViews"];
-            var images = (JArray)json["images"];
+            var root = jsonNode.AsObject();
+            var accessors = root["accessors"]?.AsArray();
+            var bufferViews = root["bufferViews"]?.AsArray();
+            var images = root["images"]?.AsArray();
 
             var bufferViewIndicesToRemove = new List<int>();
 
@@ -135,10 +132,10 @@ namespace glTF
             {
                 for (var index = 0; index < images.Count; index++)
                 {
-                    var image = (JObject)images[index];
-                    var uri = (string)image["uri"];
-                    if (uri != null)
+                    var image = images[index]?.AsObject();
+                    if (image != null)
                     {
+                        var uri = image["uri"]?.GetValue<string>();
                         if (Uri.IsWellFormedUriString(uri, UriKind.Relative))
                         {
                             var sourceFilePath = Path.Combine(this.inputDirectoryPath, Path.GetFileName(uri));
@@ -153,34 +150,34 @@ namespace glTF
 
                             image["uri"] = fileName;
                         }
-                    }
-                    else if (this.unpackImages && bufferViews != null && binChunkOffset != -1)
-                    {
-                        var bufferViewIndex = (int)image["bufferView"];
-                        var bufferView = bufferViews[bufferViewIndex];
-                        var bufferIndex = (int)bufferView["buffer"];
-                        if (bufferIndex == 0)
+                        else if (this.unpackImages && bufferViews != null && binChunkOffset != -1)
                         {
-                            var mimeType = (string)image["mimeType"];
-                            var fileExtension = MimeType.ToFileExtension(mimeType);
-                            var fileName = $"{this.inputFileName}_image{index}{fileExtension}";
-
-                            using (var fileStream = File.Create(Path.Combine(this.outputDirectoryPath, fileName)))
+                            var bufferViewIndex = (int)image["bufferView"];
+                            var bufferView = bufferViews[bufferViewIndex];
+                            var bufferIndex = (int)bufferView["buffer"];
+                            if (bufferIndex == 0)
                             {
-                                var byteOffset = (long?)bufferView["byteOffset"] ?? 0;
-                                var byteLength = (int)bufferView["byteLength"];
+                                var mimeType = (string)image["mimeType"];
+                                var fileExtension = MimeType.ToFileExtension(mimeType);
+                                var fileName = $"{this.inputFileName}_image{index}{fileExtension}";
 
-                                using (var viewStream = memoryMappedFile.CreateViewStream(binChunkOffset + byteOffset, byteLength, MemoryMappedFileAccess.Read))
+                                using (var fileStream = File.Create(Path.Combine(this.outputDirectoryPath, fileName)))
                                 {
-                                    viewStream.CopyTo(fileStream);
+                                    var byteOffset = (long?)bufferView["byteOffset"] ?? 0;
+                                    var byteLength = (int)bufferView["byteLength"];
+
+                                    using (var viewStream = memoryMappedFile.CreateViewStream(binChunkOffset + byteOffset, byteLength, MemoryMappedFileAccess.Read))
+                                    {
+                                        viewStream.CopyTo(fileStream);
+                                    }
                                 }
+
+                                image.Remove("bufferView");
+                                image.Remove("mimeType");
+                                image["uri"] = fileName;
+
+                                bufferViewIndicesToRemove.Add(bufferViewIndex);
                             }
-
-                            image.Remove("bufferView");
-                            image.Remove("mimeType");
-                            image["uri"] = fileName;
-
-                            bufferViewIndicesToRemove.Add(bufferViewIndex);
                         }
                     }
                 }
@@ -188,30 +185,36 @@ namespace glTF
 
             var bufferViewIndexMap = new Dictionary<int, int>();
 
-            if (bufferViews != null && bufferViewIndicesToRemove.Any())
+            if (bufferViews != null && bufferViewIndicesToRemove.Count > 0)
             {
-                var newBufferViews = new JArray();
+                var newIndex = 0;
                 for (var index = 0; index < bufferViews.Count; index++)
                 {
                     if (!bufferViewIndicesToRemove.Contains(index))
                     {
-                        var newIndex = newBufferViews.Count;
-                        bufferViewIndexMap.Add(index, newIndex);
-                        newBufferViews.Add(bufferViews[index]);
+                        if (index != newIndex)
+                        {
+                            bufferViewIndexMap.Add(index, newIndex);
+                        }
+
+                        newIndex++;
                     }
                 }
 
-                if (newBufferViews.Count == 0)
+                if (newIndex == 0)
                 {
-                    json.Remove("bufferViews");
+                    root.Remove("bufferViews");
                 }
                 else
                 {
-                    json["bufferViews"] = newBufferViews;
+                    foreach (var indexToRemove in bufferViewIndicesToRemove.OrderDescending())
+                    {
+                        bufferViews.RemoveAt(indexToRemove);
+                    }
                 }
             }
 
-            if (accessors != null && bufferViewIndexMap.Any())
+            if (accessors != null && bufferViewIndexMap.Count > 0)
             {
                 foreach (var accessor in accessors)
                 {
@@ -227,9 +230,10 @@ namespace glTF
             }
         }
 
-        private void ProcessBinFiles(JObject json, MemoryMappedFile memoryMappedFile, long binChunkOffset)
+        private void ProcessBinFiles(JsonNode jsonNode, MemoryMappedFile memoryMappedFile, long binChunkOffset)
         {
-            var buffers = (JArray)json["buffers"];
+            var root = jsonNode.AsObject();
+            var buffers = root["buffers"]?.AsArray();
             if (buffers != null)
             {
                 for (var index = 0; index < buffers.Count; index++)
@@ -251,7 +255,7 @@ namespace glTF
                     }
                 }
 
-                var bufferViews = (JArray)json["bufferViews"];
+                var bufferViews = root["bufferViews"]?.AsArray();
                 if (bufferViews != null && binChunkOffset != -1)
                 {
                     if (bufferViews.Any(bufferView => (int)bufferView["buffer"] == 0))
@@ -298,7 +302,7 @@ namespace glTF
                     else
                     {
                         buffers.RemoveAt(0);
-                        json["buffers"] = buffers;
+                        root["buffers"] = buffers;
 
                         foreach (var bufferView in bufferViews)
                         {
