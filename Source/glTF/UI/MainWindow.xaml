@@ -5,12 +5,19 @@
     xmlns:local="using:glTF"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="glTF Shell Extensions">
+    mc:Ignorable="d">
 
-    <TextBlock
-        FontSize="{ThemeResource TextStyleLargeFontSize}" Margin="25"
-        HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords"
-        Text="Right-click on a .gltf or .glb in Windows Explorer to pack or unpack the selected file." />
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock
+            FontSize="{ThemeResource TextStyleLargeFontSize}"
+            TextWrapping="WrapWholeWords"
+            Text="Right-click on a .gltf or .glb in the File Explorer to pack or unpack the selected file." />
+        <TextBlock
+            Margin="0,5,0,0"
+            FontSize="{ThemeResource TextStyleLargeFontSize}"
+            TextWrapping="WrapWholeWords">
+            <Span xml:space="preserve"><Hyperlink Click="Hyperlink_Click">Restart the File Explorer</Hyperlink> if the options are not showing in the context menu.</Span>
+        </TextBlock>
+    </StackPanel>
 
 </Window>
