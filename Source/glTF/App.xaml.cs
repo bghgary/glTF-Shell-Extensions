@@ -1,39 +1,40 @@
-﻿using System.Windows;
+﻿using Microsoft.UI.Xaml;
+using System;
 
 namespace glTF
 {
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        public App()
         {
-            base.OnStartup(e);
+            this.InitializeComponent();
+        }
 
-            if (e.Args.Length == 2)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length == 3)
             {
-                var command = e.Args[0];
-                switch (command)
+                switch (args[1])
                 {
                     case "Pack":
-                    {
-                        new PackWindow(e.Args[1]);
-                        break;
-                    }
+                        {
+                            new PackWindow(args[2]);
+                            break;
+                        }
                     case "Unpack":
-                    {
-                        var window = new UnpackWindow(e.Args[1]);
-                        window.ShowDialog();
-                        break;
-                    }
+                        {
+                            var window = new UnpackWindow(args[2]);
+                            window.Activate();
+                            break;
+                        }
                 }
             }
             else
             {
-                MessageBox.Show(
-                    "Right-click on a .gltf or .glb in Windows Explorer to pack or unpack the selected file.",
-                    "glTF Shell Extensions");
+                var window = new MainWindow();
+                window.Activate();
             }
-
-            this.Shutdown();
         }
     }
 }

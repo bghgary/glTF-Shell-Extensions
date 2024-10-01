@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace glTF
 {
@@ -14,12 +13,10 @@ namespace glTF
         {
             var inputDirectoryPath = Path.GetDirectoryName(inputFilePath);
 
-            JObject json;
+            JsonNode jsonNode;
             using (var jsonStream = File.OpenRead(inputFilePath))
-            using (var jsonStreamReader = new StreamReader(jsonStream))
-            using (var jsonTextReader = new JsonTextReader(jsonStreamReader))
             {
-                json = (JObject)JToken.ReadFrom(jsonTextReader);
+                jsonNode = JsonNode.Parse(jsonStream);
             }
 
             var position = 0;
@@ -27,19 +24,19 @@ namespace glTF
             var memoryMappedFiles = new Dictionary<string, MemoryMappedFile>();
             var viewStreams = new List<MemoryMappedViewStream>();
 
-            var buffers = (JArray)json["buffers"];
-            var bufferViews = (JArray)json["bufferViews"];
-            var images = (JArray)json["images"];
+            var buffers = jsonNode["buffers"]?.AsArray();
+            var bufferViews = jsonNode["bufferViews"]?.AsArray();
+            var images = jsonNode["images"]?.AsArray();
 
             if (buffers != null)
             {
                 for (var index = buffers.Count - 1; index >= 0; index--)
                 {
-                    var buffer = (JObject)buffers[index];
+                    var buffer = buffers[index];
                     var uri = (string)buffer["uri"];
                     if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
                     {
-                        foreach (JObject bufferView in bufferViews)
+                        foreach (var bufferView in bufferViews)
                         {
                             var bufferIndex = (int)bufferView["buffer"];
                             if (bufferIndex == index)
@@ -71,7 +68,7 @@ namespace glTF
 
             if (images != null)
             {
-                foreach (JObject image in images)
+                foreach (var image in images)
                 {
                     var uri = (string)image["uri"];
                     if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
@@ -86,20 +83,20 @@ namespace glTF
                         var fileLength = Tools.GetFileLength(filePath);
                         viewStreams.Add(memoryMappedFile.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read));
 
-                        image.Remove("uri");
+                        image.AsObject().Remove("uri");
                         image["bufferView"] = bufferViews.Count;
                         image["mimeType"] = MimeType.FromFileExtension(Path.GetExtension(uri));
 
                         position = Tools.Align(position);
 
-                        var bufferView = new JObject
+                        var bufferView = new JsonObject
                         {
                             ["buffer"] = -1,
                             ["byteLength"] = fileLength
                         };
 
                         bufferView.SetValue("byteOffset", position, 0);
-                        bufferViews.Add(bufferView);
+                        bufferViews.Add((JsonNode)bufferView);
 
                         position += fileLength;
                     }
@@ -110,10 +107,11 @@ namespace glTF
             {
                 if (buffers == null)
                 {
-                    json["buffers"] = new JArray();
+                    buffers = new JsonArray();
+                    jsonNode["buffers"] = buffers;
                 }
 
-                buffers.Insert(0, new JObject
+                buffers.Insert(0, new JsonObject
                 {
                     ["byteLength"] = position
                 });
@@ -140,10 +138,9 @@ namespace glTF
                 binaryWriter.Write(0U); // json chunk length
                 binaryWriter.Write(Binary.ChunkFormatJson);
 
-                using (var streamWriter = new StreamWriter(binaryWriter.BaseStream, new UTF8Encoding(false, true), 1024, true))
-                using (var jsonTextWriter = new JsonTextWriter(streamWriter))
+                using (var jsonTextWriter = new Utf8JsonWriter(binaryWriter.BaseStream))
                 {
-                    json.WriteTo(jsonTextWriter);
+                    jsonNode.WriteTo(jsonTextWriter);
                 }
 
                 binaryWriter.BaseStream.Align(0x20);
