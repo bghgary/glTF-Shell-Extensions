@@ -13,7 +13,7 @@
   <Identity
     Name="3561bghgary.glTFShellExtensions"
     Publisher="CN=garyhsu"
-    Version="0.4.0.0" />
+    Version="0.4.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="6dd2c9dc-7e2b-4ea5-8b25-68185ee04224" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
