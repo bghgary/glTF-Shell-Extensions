@@ -2,3 +2,6 @@
 Build
 *.aps
 *.user
+
+# published files end up here
+/Source/glTF/bin
