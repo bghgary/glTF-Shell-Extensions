@@ -5,3 +5,6 @@ Build
 
 # published files end up here
 /Source/glTF/bin
+
+# launc settings
+/Source/glTF/Properties/launchSettings.json

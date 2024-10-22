@@ -11,13 +11,13 @@ namespace glTF
     {
         public static void Pack(string inputFilePath, string outputFilePath)
         {
-            var inputDirectoryPath = Path.GetDirectoryName(inputFilePath);
-
             JsonNode jsonNode;
             using (var jsonStream = File.OpenRead(inputFilePath))
             {
                 jsonNode = JsonNode.Parse(jsonStream);
             }
+
+            var baseUri = new Uri(inputFilePath);
 
             var position = 0;
 
@@ -33,36 +33,38 @@ namespace glTF
                 for (var index = buffers.Count - 1; index >= 0; index--)
                 {
                     var buffer = buffers[index];
-                    var uri = (string)buffer["uri"];
-                    if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
+                    var uriString = (string)buffer["uri"];
+                    if (!Uri.TryCreate(baseUri, uriString, out var uri))
                     {
-                        foreach (var bufferView in bufferViews)
-                        {
-                            var bufferIndex = (int)bufferView["buffer"];
-                            if (bufferIndex == index)
-                            {
-                                bufferView["buffer"] = -1;
-
-                                var byteOffset = (int?)bufferView["byteOffset"] ?? 0;
-                                bufferView.SetValue("byteOffset", position + byteOffset, 0);
-                            }
-                        }
-
-                        var filePath = Path.Combine(inputDirectoryPath, uri);
-                        if (!memoryMappedFiles.TryGetValue(filePath, out MemoryMappedFile memoryMappedFile))
-                        {
-                            memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open);
-                            memoryMappedFiles.Add(filePath, memoryMappedFile);
-                        }
-
-                        var fileLength = Tools.GetFileLength(filePath);
-                        viewStreams.Add(memoryMappedFile.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read));
-
-                        position += fileLength;
-                        position = Tools.Align(position);
-
-                        buffers.RemoveAt(index);
+                        throw new InvalidDataException($"Invalid URI: {uriString}");
                     }
+
+                    foreach (var bufferView in bufferViews)
+                    {
+                        var bufferIndex = (int)bufferView["buffer"];
+                        if (bufferIndex == index)
+                        {
+                            bufferView["buffer"] = -1;
+
+                            var byteOffset = (int?)bufferView["byteOffset"] ?? 0;
+                            bufferView.SetValue("byteOffset", position + byteOffset, 0);
+                        }
+                    }
+
+                    var filePath = uri.LocalPath;
+                    if (!memoryMappedFiles.TryGetValue(filePath, out MemoryMappedFile memoryMappedFile))
+                    {
+                        memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open);
+                        memoryMappedFiles.Add(filePath, memoryMappedFile);
+                    }
+
+                    var fileLength = Tools.GetFileLength(filePath);
+                    viewStreams.Add(memoryMappedFile.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read));
+
+                    position += fileLength;
+                    position = Tools.Align(position);
+
+                    buffers.RemoveAt(index);
                 }
             }
 
@@ -70,47 +72,45 @@ namespace glTF
             {
                 foreach (var image in images)
                 {
-                    var uri = (string)image["uri"];
-                    if (uri != null && Uri.IsWellFormedUriString(uri, UriKind.Relative))
+                    var uriString = (string)image["uri"];
+                    if (!Uri.TryCreate(baseUri, uriString, out var uri))
                     {
-                        var filePath = Path.Combine(inputDirectoryPath, uri);
-                        if (!memoryMappedFiles.TryGetValue(filePath, out MemoryMappedFile memoryMappedFile))
-                        {
-                            memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open);
-                            memoryMappedFiles.Add(filePath, memoryMappedFile);
-                        }
-
-                        var fileLength = Tools.GetFileLength(filePath);
-                        viewStreams.Add(memoryMappedFile.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read));
-
-                        image.AsObject().Remove("uri");
-                        image["bufferView"] = bufferViews.Count;
-                        image["mimeType"] = MimeType.FromFileExtension(Path.GetExtension(uri));
-
-                        position = Tools.Align(position);
-
-                        var bufferView = new JsonObject
-                        {
-                            ["buffer"] = -1,
-                            ["byteLength"] = fileLength
-                        };
-
-                        bufferView.SetValue("byteOffset", position, 0);
-                        bufferViews.Add((JsonNode)bufferView);
-
-                        position += fileLength;
+                        throw new InvalidDataException($"Invalid URI: {uriString}");
                     }
+
+                    var filePath = uri.LocalPath;
+                    if (!memoryMappedFiles.TryGetValue(filePath, out MemoryMappedFile memoryMappedFile))
+                    {
+                        memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open);
+                        memoryMappedFiles.Add(filePath, memoryMappedFile);
+                    }
+
+                    var fileLength = Tools.GetFileLength(filePath);
+                    viewStreams.Add(memoryMappedFile.CreateViewStream(0, fileLength, MemoryMappedFileAccess.Read));
+
+                    image.AsObject().Remove("uri");
+                    image["bufferView"] = bufferViews.Count;
+                    image["mimeType"] = MimeType.FromFileExtension(Path.GetExtension(filePath));
+
+                    position = Tools.Align(position);
+
+                    var bufferView = new JsonObject
+                    {
+                        ["buffer"] = -1,
+                        ["byteLength"] = fileLength
+                    };
+
+                    bufferView.SetValue("byteOffset", position, 0);
+                    bufferViews.Add((JsonNode)bufferView);
+
+                    position += fileLength;
                 }
             }
 
+            jsonNode.AsObject().Remove("buffers");
             if (viewStreams.Count != 0)
             {
-                if (buffers == null)
-                {
-                    buffers = new JsonArray();
-                    jsonNode["buffers"] = buffers;
-                }
-
+                buffers = [];
                 buffers.Insert(0, new JsonObject
                 {
                     ["byteLength"] = position
@@ -121,6 +121,8 @@ namespace glTF
                     var bufferIndex = (int)bufferView["buffer"];
                     bufferView["buffer"] = bufferIndex + 1;
                 }
+
+                jsonNode["buffers"] = buffers;
             }
 
             using (var fileStream = File.Create(outputFilePath))
