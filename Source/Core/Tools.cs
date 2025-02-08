@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace glTF
+﻿namespace glTF
 {
     internal static class Tools
     {
