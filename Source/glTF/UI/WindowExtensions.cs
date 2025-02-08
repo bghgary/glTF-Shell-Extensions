@@ -39,7 +39,15 @@ namespace glTF
 
         public static async Task ShowErrorDialogAsync(this Window window, string message, string title)
         {
-            var dialog = new ContentDialog()
+            if (window.Content.XamlRoot == null)
+            {
+                var taskCompletionSource = new TaskCompletionSource();
+                (window.Content as FrameworkElement).Loaded += (sender, e) => taskCompletionSource.SetResult();
+                window.Activate();
+                await taskCompletionSource.Task;
+            }
+
+            var dialog = new ContentDialog
             {
                 XamlRoot = window.Content.XamlRoot,
                 Title = title,

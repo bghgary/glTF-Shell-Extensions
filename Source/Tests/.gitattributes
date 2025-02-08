@@ -1,0 +1,4 @@
+External/**/*.exe filter=lfs diff=lfs merge=lfs -text
+Assets/**/*.glb filter=lfs diff=lfs merge=lfs -text
+Assets/**/*.png filter=lfs diff=lfs merge=lfs -text
+Assets/**/*.jpg filter=lfs diff=lfs merge=lfs -text
