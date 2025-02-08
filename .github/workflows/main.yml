@@ -1,0 +1,26 @@
+name: main
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Restore NuGet
+      run: nuget restore
+      working-directory: ./Source
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Build with MSBuild
+      run: msbuild /p:Configuration=Release
+      working-directory: ./Source
