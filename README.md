@@ -1,3 +1,5 @@
+[![main](https://github.com/bghgary/glTF-Shell-Extensions/actions/workflows/main.yml/badge.svg)](https://github.com/bghgary/glTF-Shell-Extensions/actions/workflows/main.yml)
+
 # glTF Shell Extensions for Microsoft Windows
 Microsoft Windows shell extensions that pack .gltf to .glb and unpack .glb to .gltf
 
