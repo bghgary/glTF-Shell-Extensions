@@ -14,7 +14,12 @@ namespace glTF
 
         public async Task ValidateAsync(string filePath)
         {
-            using var process = Process.Start(ValidatorExePath, [filePath]);
+            using var process = Process.Start(new ProcessStartInfo(ValidatorExePath, [filePath])
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+            })!;
+
             await process.WaitForExitAsync(this.cancellationToken);
             if (process.ExitCode != 0)
             {
@@ -62,17 +67,6 @@ namespace glTF
         }
 
         [TestMethod]
-        public async Task Pack_LightsIES()
-        {
-            string[] filePaths = [@"LightsIES\Example.gltf", @"LightsIES\Example_bufferview.gltf", @"LightsIES\Example_dataUri.gltf"];
-            foreach (var filePath in filePaths)
-            {
-                var outputFilePath = this.Unpack(this.Pack(filePath));
-                await this.ValidateAsync(outputFilePath);
-            }
-        }
-
-        [TestMethod]
         public async Task Unpack_Box()
         {
             var outputFilePath = this.Unpack(@"Box\glTF-Binary\Box.glb");
@@ -87,10 +81,21 @@ namespace glTF
         }
 
         [TestMethod]
-        public async Task Pack_And_Unpack_BoxTextured_Embedded()
+        public async Task Pack_Unpack_BoxTextured_Embedded()
         {
             var outputFilePath = this.Unpack(this.Pack(@"BoxTextured\glTF-Embedded\BoxTextured.gltf"));
             await this.ValidateAsync(outputFilePath);
+        }
+
+        [TestMethod]
+        public async Task Pack_Unpack_LightsIES()
+        {
+            string[] filePaths = [@"LightsIES\Example.gltf", @"LightsIES\Example_bufferview.gltf", @"LightsIES\Example_dataUri.gltf"];
+            foreach (var filePath in filePaths)
+            {
+                var outputFilePath = this.Unpack(this.Pack(filePath));
+                await this.ValidateAsync(outputFilePath);
+            }
         }
     }
 }
