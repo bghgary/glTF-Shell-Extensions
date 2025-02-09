@@ -81,11 +81,11 @@ namespace glTF
                             if (bufferIndex == index)
                             {
                                 bufferView.Remove("buffer");
-                                bufferView.Set("byteOffset", fileInfo.ByteOffset + bufferView.GetInt("byteOffset", 0), 0);
+                                bufferView.SetInt("byteOffset", fileInfo.ByteOffset + bufferView.GetInt("byteOffset", 0), 0);
                             }
                             else if (bufferIndex > index)
                             {
-                                bufferView.Set("buffer", bufferIndex - 1);
+                                bufferView["buffer"] = bufferIndex - 1;
                             }
                         }
                     }
@@ -114,16 +114,16 @@ namespace glTF
                     if (bufferViews == null)
                     {
                         bufferViews = [];
-                        root.Set("bufferViews", bufferViews);
+                        root["bufferViews"] = bufferViews;
                     }
 
                     element.Remove("uri");
-                    element.Set("bufferView", bufferViews.Count);
-                    element.Set("mimeType", MimeType.FromFileExtension(Path.GetExtension(filePath)));
+                    element["bufferView"] = bufferViews.Count;
+                    element["mimeType"] = MimeType.FromFileExtension(Path.GetExtension(filePath));
 
                     JsonNode bufferView = new JsonObject();
-                    bufferView.Set("byteOffset", fileInfo.ByteOffset, 0);
-                    bufferView.Set("byteLength", fileInfo.FileLength);
+                    bufferView.SetInt("byteOffset", fileInfo.ByteOffset, 0);
+                    bufferView["byteLength"] = fileInfo.FileLength;
                     bufferViews.Add(bufferView);
                 }
             }
@@ -146,11 +146,11 @@ namespace glTF
                 if (buffers == null)
                 {
                     buffers = [];
-                    root.Set("buffers", buffers);
+                    root["buffers"] = buffers;
                 }
 
                 JsonNode buffer = new JsonObject();
-                buffer.Set("byteLength", byteOffset);
+                buffer["byteLength"] = byteOffset;
                 buffers.Insert(0, buffer);
 
                 if (bufferViews != null)

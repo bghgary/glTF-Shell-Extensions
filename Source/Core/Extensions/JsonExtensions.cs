@@ -54,14 +54,9 @@ namespace glTF
             return uri.LocalPath;
         }
 
-        public static void Set<T>(this JsonNode jsonNode, string propertyName, T value)
+        public static void SetInt(this JsonNode jsonNode, string propertyName, int value, int defaultValue)
         {
-            jsonNode[propertyName] = JsonValue.Create(value);
-        }
-
-        public static void Set<T>(this JsonNode jsonNode, string propertyName, T value, T defaultValue)
-        {
-            if (EqualityComparer<T>.Default.Equals(value, defaultValue))
+            if (value == defaultValue)
             {
                 jsonNode.AsObject().Remove(propertyName);
             }

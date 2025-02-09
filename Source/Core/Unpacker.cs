@@ -147,7 +147,7 @@ namespace glTF
                             File.Copy(sourceFilePath, destinationFilePath, true);
                         }
 
-                        image.Set("uri", fileName);
+                        image["uri"] = fileName;
                     }
                     else if (this.unpackImages && bufferViews != null && binChunkOffset != -1)
                     {
