@@ -1,0 +1,31 @@
+name: main
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Restore packages
+      run: nuget restore
+      working-directory: ./Source
+
+    - name: Setup build
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build targets
+      run: msbuild /t:ExplorerCommand /t:glTF /t:Tests /p:Configuration=Release /p:Platform=x64
+      working-directory: ./Source
+
+    - name: Run tests
+      run: dotnet test ./Build/Tests/bin/Release/AnyCPU/Tests.dll -s ./Source/.runsettings -v n
